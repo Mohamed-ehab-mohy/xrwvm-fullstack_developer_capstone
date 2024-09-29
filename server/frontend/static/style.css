@@ -124,3 +124,47 @@ img{
     text-align:center;
     box-shadow: 2px 2px 3px #999;  
 }
+
+.car {
+
+    max-width: 40%; /* Responsive image */
+    height: auto
+}
+.car_img{
+
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    
+    margin: 0; /* Remove default margins */
+    height: 50%;
+    width: 100%;
+    
+}
+
+.Contact_text{
+    color: blue;
+    margin-left: 50%;
+    border-left: 2px solid black;
+}
+
+.Image_Contact{
+    margin: 0; /* Remove default margins */
+    height: 50%;
+    width: 20%;
+    margin-right: 40%;
+    margin-top: -20%;
+
+    
+   
+}
+
+.Contact_Us{
+    border: rgb(103, 102, 105) 3px solid;
+    display: flex;  
+    flex-direction: column;
+    margin-left:5%;
+    margin-right:5%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
