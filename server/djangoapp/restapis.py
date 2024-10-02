@@ -1,15 +1,11 @@
-# Uncomment the imports below before you add the function code
-# import requests
+import requests
 import os
 from dotenv import load_dotenv
-from .restapis import get_request, analyze_review_sentiments, post_review
+
 load_dotenv()
 
-backend_url = os.getenv(
-    'backend_url', default="http://localhost:3030")
-sentiment_analyzer_url = os.getenv(
-    'sentiment_analyzer_url',
-    default="http://localhost:5050/")
+backend_url = os.getenv('backend_url', default="http://localhost:3030")
+sentiment_analyzer_url = os.getenv('sentiment_analyzer_url', default="http://localhost:5050/")
 
 def get_request(endpoint, **kwargs):
     params = ""
@@ -27,7 +23,6 @@ def get_request(endpoint, **kwargs):
     except:
         # If any error occurs
         print("Network exception occurred")
-# Add code for get requests to back end
 
 def analyze_review_sentiments(text):
     request_url = sentiment_analyzer_url+"analyze/"+text
@@ -39,16 +34,13 @@ def analyze_review_sentiments(text):
         print(f"Unexpected {err=}, {type(err)=}")
         print("Network exception occurred")
 
-#Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
 def get_dealerships(request, state="All"):
-    if(state == "All"):
+    if state == "All":
         endpoint = "/fetchDealers"
     else:
-        endpoint = "/fetchDealers/"+state
+        endpoint = f"/fetchDealers/{state}"
     dealerships = get_request(endpoint)
-    return JsonResponse({"status":200,"dealers":dealerships})
-# request_url = sentiment_analyzer_url+"analyze/"+text
-# Add code for retrieving sentiments
+    return JsonResponse({"status": 200, "dealers": dealerships})
 
 def post_review(data_dict):
     request_url = backend_url+"/insert_review"
@@ -58,4 +50,3 @@ def post_review(data_dict):
         return response.json()
     except:
         print("Network exception occurred")
-# Add code for posting review
