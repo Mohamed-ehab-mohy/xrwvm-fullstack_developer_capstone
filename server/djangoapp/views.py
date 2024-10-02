@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.models import User
@@ -7,7 +8,9 @@ from django.views.decorators.csrf import csrf_exempt
 from .restapis import get_request, analyze_review_sentiments, post_review
 import json
 import logging
-
+from django.conf import settings
+from .models import CarMake, CarModel
+from .populate import initiate
 logger = logging.getLogger(__name__)
 
 @csrf_exempt
@@ -23,26 +26,45 @@ def login_user(request):
     
     return JsonResponse({"userName": username, "status": "Invalid credentials"})
 
+# Create a `logout_request` view to handle sign out request
 def logout_user(request):
+    # Log the user out
     logout(request)
-    return JsonResponse({"userName": ""})
-
+    # Return a JSON response with an empty username
+    data = {"userName": ""}
+    return JsonResponse(data)
+# ...
+# Create a `registration` view to handle sign up request
 @csrf_exempt
 def registration(request):
+    context = {}
     data = json.loads(request.body)
     username = data['userName']
     password = data['password']
     first_name = data['firstName']
     last_name = data['lastName']
     email = data['email']
-
-    if User.objects.filter(username=username).exists():
-        return JsonResponse({"userName": username, "error": "Already Registered"})
-    
-    user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, password=password, email=email)
-    login(request, user)
-    return JsonResponse({"userName": username, "status": "Authenticated"})
-
+    username_exist = False
+    email_exist = False
+    try:
+        # Check if user already exists
+        User.objects.get(username=username)
+        username_exist = True
+    except:
+        # If not, simply log this is a new user
+        logger.debug("{} is new user".format(username))
+    # If it is a new user
+    if not username_exist:
+        # Create user in auth_user table
+        user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=password, email=email)
+        # Login the user and redirect to list page
+        login(request, user)
+        data = {"userName":username,"status":"Authenticated"}
+        return JsonResponse(data)
+    else :
+        data = {"userName":username,"error":"Already Registered"}
+        return JsonResponse(data)    
+# ...
 #Update the `get_dealerships` render list of dealerships all by default, particular state if state is passed
 def get_dealerships(request, state="All"):
     if(state == "All"):
