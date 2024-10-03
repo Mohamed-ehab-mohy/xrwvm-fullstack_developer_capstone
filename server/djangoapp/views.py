@@ -4,13 +4,14 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.views.decorators.csrf import csrf_exempt
-#from .restapis import get_request, post_review, analyze_review_sentiments
+from .restapis import get_request, post_review, analyze_review_sentiments
 from .restapis import get_request, analyze_review_sentiments, post_review
 import json
 import logging
 from django.conf import settings
 from .models import CarMake, CarModel
 from .populate import initiate
+
 logger = logging.getLogger(__name__)
 
 @csrf_exempt
