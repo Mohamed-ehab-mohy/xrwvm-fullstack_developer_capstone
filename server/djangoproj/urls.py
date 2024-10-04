@@ -1,22 +1,18 @@
-import LoginPanel from "./components/Login/Login"
-import Register from './components/Register/Register';
-import { Routes, Route } from "react-router-dom";
-import Dealers from './components/Dealers/Dealers';
-import Dealer from "./components/Dealers/Dealer"
-import PostReview from "./components/Dealers/PostReview"
+from django.contrib import admin
+from django.urls import path, include
+from django.views.generic import TemplateView
+from django.conf.urls.static import static
+from django.conf import settings
 
-function App() {
-  return (
-    <Routes>
-        
-      <Route path="/login" element={<LoginPanel />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/dealers" element={<Dealers/>} />
-      <Route path="/dealer/:id" element={<Dealer/>} />
-      <Route path="/postreview/:id" element={<PostReview/>} />
-      
-      
-    </Routes>
-  );
-}
-export default App;
+urlpatterns = [
+    path('register/', TemplateView.as_view(template_name="index.html")),
+    path('login/', TemplateView.as_view(template_name="index.html")),
+    path('contact/', TemplateView.as_view(template_name="Contact.html")),
+    path('about/', TemplateView.as_view(template_name="About.html")),
+    path('admin/', admin.site.urls),
+    path('djangoapp/', include('djangoapp.urls')),
+    path('', TemplateView.as_view(template_name="Home.html")),
+    path('dealers/', TemplateView.as_view(template_name="index.html")),
+    path('dealer/<int:dealer_id>',TemplateView.as_view(template_name="index.html")),
+    path('postreview/<int:dealer_id>',TemplateView.as_view(template_name="index.html")),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
