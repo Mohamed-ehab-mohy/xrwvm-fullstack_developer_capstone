@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from . import views
 from django.views.generic import TemplateView
+
 app_name = 'djangoapp'
 urlpatterns = [
     # # path for registration
